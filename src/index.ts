@@ -14,7 +14,7 @@ type DeepAsyncRecord<T extends {}> = {
 type TypedApi<T extends DeepAsyncRecord<T>> = {
   [key in keyof T]: T[key] extends AsyncFn
     ? {
-        use: (
+        useData: (
           ...args: [...Parameters<T[key]>, { enabled?: boolean } | void]
         ) =>
           | {

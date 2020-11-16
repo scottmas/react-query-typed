@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { render } from "react-dom";
 import type { apiType } from "./api";
 import { createTypedBackendForClient } from "../../";
@@ -10,11 +10,8 @@ const typedBackend = createTypedBackendForClient<apiType>({
 render(<App />, document.getElementById("root"));
 
 function App() {
-  if(Math.random() > 0.5){
-    return null
-  }
 
-  const resp = typedBackend.accounts.anotherCoolAccountsFn.use({bar: 1, blah: 's'})
+  const resp = typedBackend.accounts.anotherCoolAccountsFn.useData({bar: 1, blah: ''})
 
   return resp.isSuccess ? <div>{resp.data.waddup}</div> : null
 }
