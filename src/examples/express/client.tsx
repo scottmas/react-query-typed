@@ -3,9 +3,7 @@ import { render } from "react-dom";
 import type { apiType } from "./api";
 import { createTypedBackendForClient } from "../../";
 
-const typedBackend = createTypedBackendForClient<apiType>({
-  shouldOnlyIncludeTypes: true,
-});
+const typedBackend = createTypedBackendForClient<apiType>();
 
 render(<App />, document.getElementById("root"));
 

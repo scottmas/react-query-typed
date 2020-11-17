@@ -1,7 +1,7 @@
 import { UnwrapPromise } from "./utils/typescript-utils";
-export function createTypedBackendForClient<T extends DeepAsyncRecord<T>>(p: {
-  shouldOnlyIncludeTypes: boolean;
-}): TypedApi<T> {
+export function createTypedBackendForClient<
+  T extends DeepAsyncRecord<T>
+>(): TypedApi<T> {
   return null as any;
 }
 
