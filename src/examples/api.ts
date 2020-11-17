@@ -1,8 +1,4 @@
 export const api = {
-  initialize() {
-    console.log("Initialize some stuff yo");
-  },
-
   accounts: {
     async someCoolAccountsFn(someParam: string, anotherParam: number) {
       console.info("Some super secret something....");
@@ -15,7 +11,7 @@ export const api = {
   },
 
   posts: {
-    async someCoolPostsFn(badParam: () => void) {
+    async someCoolPostsFn() {
       console.info("Some super secret something....");
     },
     async anotherCoolPostsFn() {
@@ -25,3 +21,21 @@ export const api = {
 };
 
 export type apiType = typeof api;
+
+type ReturnType = {
+  miscData: {
+    blah: true;
+  };
+  documentData: {
+    accounts: [{ id: "asdf" }];
+  };
+  queryData: {
+    accounts: [{ id: "asdf" }];
+  };
+  invalidatedQueries: {
+    accounts: true;
+  };
+  invalidatedDocs: {
+    accounts: ["asdf"];
+  };
+};

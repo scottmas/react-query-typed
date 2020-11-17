@@ -12,49 +12,66 @@ type DeepAsyncRecord<T extends {}> = {
 };
 
 type TypedApi<T extends DeepAsyncRecord<T>> = {
+  endpoints: TypedApiInner<T>;
+  useEndpoint: typeof useEndpoint;
+};
+
+type TypedApiInner<T extends DeepAsyncRecord<T>> = {
   [key in keyof T]: T[key] extends AsyncFn
-    ? {
-        useData: (
-          ...args: [...Parameters<T[key]>, { enabled?: boolean } | void]
-        ) =>
-          | {
-              data: UnwrapPromise<ReturnType<T[key]>>;
-              status: "success";
-              isError: false;
-              isFetching: false;
-              isIdle: false;
-              isSuccess: true;
-            }
-          | {
-              status: "fetching";
-              isError: false;
-              isFetching: true;
-              isIdle: false;
-              isSuccess: false;
-              data: null;
-            }
-          | {
-              status: "idle";
-              isError: false;
-              isFetching: true;
-              isIdle: true;
-              isSuccess: false;
-              data: null;
-            }
-          | {
-              status: "error";
-              isError: true;
-              isFetching: false;
-              isIdle: false;
-              isSuccess: false;
-              data: null;
-              error: unknown;
-            };
-        fetch: (
-          ...args: [...Parameters<T[key]>, { enabled?: boolean } | void]
-        ) => ReturnType<T[key]>;
-      }
+    ? (
+        ...args: [...Parameters<T[key]>, { enabled?: boolean } | void]
+      ) => ReturnType<T[key]>
     : T[key] extends DeepAsyncRecord<T[key]>
-    ? TypedApi<T[key]>
+    ? TypedApiInner<T[key]>
     : never;
 };
+
+type EndpointRequest = {
+  endpointPath: string;
+};
+
+function useEndpoint<T extends Promise<any>>(
+  prom: T
+):
+  | {
+      data: UnwrapPromise<T>;
+      status: "success";
+      isError: false;
+      isFetching: false;
+      isIdle: false;
+      isSuccess: true;
+    }
+  | {
+      status: "fetching";
+      isError: false;
+      isFetching: true;
+      isIdle: false;
+      isSuccess: false;
+      data: null;
+    }
+  | {
+      status: "idle";
+      isError: false;
+      isFetching: true;
+      isIdle: true;
+      isSuccess: false;
+      data: null;
+    }
+  | {
+      status: "error";
+      isError: true;
+      isFetching: false;
+      isIdle: false;
+      isSuccess: false;
+      data: null;
+      error: unknown;
+    } {
+  return {
+    status: "fetching",
+    isError: false,
+    isFetching: true,
+    isIdle: false,
+    isSuccess: false,
+    data: null,
+  };
+}
